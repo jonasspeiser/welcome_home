@@ -1,221 +1,206 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Einweihung × 39C3 — Public Viewing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>39C3 // POWER CYCLES RECAP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
-  <style>
-    :root {
-      --bg: #0b0e11;
-      --fg: #e6e6e6;
-      --accent: #00ff9c;
-      --muted: #8a8f98;
-      --card: #141821;
-    }
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #808080;
+            --hairline: 1px;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        * {
+            box-sizing: border-box;
+            cursor: crosshair;
+        }
 
-    body {
-      margin: 0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      background: radial-gradient(circle at top, #10151f, var(--bg));
-      color: var(--fg);
-      line-height: 1.6;
-    }
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-    header {
-      padding: 4rem 1.5rem 2rem;
-      text-align: center;
-    }
+        /* --- GRID LAYOUT --- */
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-left: var(--hairline) solid var(--white);
+            border-top: var(--hairline) solid var(--white);
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
 
-    header h1 {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      margin-bottom: 1rem;
-    }
+        .cell {
+            border-right: var(--hairline) solid var(--white);
+            border-bottom: var(--hairline) solid var(--white);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-    header h1 span {
-      color: var(--accent);
-    }
+        /* --- HEADER / POWER CYCLE SYMBOL --- */
+        .header-main {
+            grid-column: span 3;
+            padding: 4rem 2rem;
+        }
 
-    header p {
-      max-width: 720px;
-      margin: 0 auto;
-      color: var(--muted);
-    }
+        .logo-39c3 {
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 900;
+            line-height: 0.8;
+            margin: 0;
+        }
 
-    main {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 4rem;
-    }
+        .power-symbol-cell {
+            grid-column: span 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--white);
+            color: var(--black);
+        }
 
-    section {
-      margin-bottom: 3rem;
-    }
+        /* Das Power-Cycle Segment (SVG) */
+        .cycle-svg {
+            width: 80%;
+            height: 80%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 12;
+            stroke-linecap: square;
+        }
 
-    h2 {
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
+        /* --- TYPOGRAPHIE --- */
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            margin: 0 0 1rem 0;
+            display: flex;
+            justify-content: space-between;
+        }
 
-    .card {
-      background: linear-gradient(180deg, #161b26, var(--card));
-      border: 1px solid #1f2533;
-      border-radius: 12px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1rem;
-    }
+        .label {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            display: block;
+        }
 
-    .timetable-item {
-      cursor: pointer;
-      transition: transform 0.1s ease;
-    }
+        .big-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+        }
 
-    .timetable-item:hover {
-      transform: translateX(4px);
-    }
+        /* --- BUTTONS & INTERACTION --- */
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 2rem 1rem;
+            background: var(--white);
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 900;
+            text-align: center;
+            transition: background 0.1s;
+        }
 
-    .time {
-      color: var(--accent);
-      font-weight: bold;
-    }
+        .btn:hover {
+            background: var(--black);
+            color: var(--white);
+        }
 
-    .title {
-      font-size: 1.05rem;
-    }
+        .tag {
+            border: 1px solid var(--white);
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            margin-right: 0.5rem;
+        }
 
-    .meta {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
+        /* Utility */
+        .span-2 { grid-column: span 2; }
+        .span-4 { grid-column: span 4; }
+        
+        .inverted {
+            background-color: var(--white);
+            color: var(--black);
+        }
 
-    .details {
-      margin-top: 0.75rem;
-      display: none;
-      color: #cfd3da;
-    }
-
-    .open .details {
-      display: block;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-      padding: 2rem 1rem;
-    }
-
-    .blink {
-      animation: blink 1.4s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
-  </style>
+        @media (max-width: 768px) {
+            .wrapper { grid-template-columns: repeat(2, 1fr); }
+            .header-main { grid-column: span 2; }
+            .span-2, .span-4 { grid-column: span 2; }
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-  <h1>Einweihung<span>×</span>39C3</h1>
-  <p>
-    Ein ganztägiges Public Viewing ausgewählter 39C3-Talks.<br/>
-    Drop-in friendly. Nerd-approved. Chaos-kompatibel.
-  </p>
-</header>
-
-<main>
-
-  <section>
-    <h2>🧠 Was passiert hier?</h2>
-    <div class="card">
-      <p>
-        Meine Wohnung wurde eingeweiht – jetzt wird sie <strong>richtig</strong> eingeweiht.
-        Wir schauen gemeinsam eine kuratierte Auswahl an Talks vom 39C3 (Dezember),
-        reden dazwischen klug oder albern und kommen und gehen, wie es uns passt.
-      </p>
-      <p>
-        <strong>Regel:</strong> Niemand muss den ganzen Tag bleiben.
-        Komm für einen Talk. Oder fünf. Oder nur auf Mate.
-      </p>
+<div class="wrapper">
+    <div class="cell header-main">
+        <h1 class="logo-39c3">39C3</h1>
+        <p style="margin-top: 1rem; font-weight: 700;">// POWER CYCLES</p>
     </div>
-  </section>
-
-  <section>
-    <h2>🕰️ Timetable (klickbar)</h2>
-    <div id="timetable"></div>
-  </section>
-
-  <section>
-    <h2>📡 Nerd-Logistik</h2>
-    <div class="card">
-      <ul>
-        <li>WLAN: vorhanden</li>
-        <li>Strom: vorhanden</li>
-        <li>Snacks & Getränke: vorhanden</li>
-        <li>Meinungen: zahlreich</li>
-      </ul>
-      <p class="blink">Status: RUNNING</p>
+    <div class="cell power-symbol-cell">
+        <svg class="cycle-svg" viewBox="0 0 100 100">
+            <path d="M 50 10 A 40 40 0 1 1 49.9 10" stroke-dasharray="180 50" />
+            <rect x="46" y="0" width="8" height="30" fill="currentColor"/>
+        </svg>
     </div>
-  </section>
 
-</main>
+    <div class="cell span-2">
+        <span class="label">01_EVENT_NAME</span>
+        <div class="big-text">RECAP & HOUSEWARMING</div>
+    </div>
+    <div class="cell">
+        <span class="label">02_STATUS</span>
+        <div class="big-text">ON</div>
+    </div>
+    <div class="cell">
+        <span class="label">03_YEAR</span>
+        <div class="big-text">2025</div>
+    </div>
 
-<footer>
-  Chaos welcome · Drop-in friendly · No RSVP required
-</footer>
+    <div class="cell span-2">
+        <h2><span>// MISSION</span> <span>[04]</span></h2>
+        <p>Einweihung der neuen Homebase. Gemeinsames Sichten der verpassten 39C3-Vorträge. Austausch von Bits und Mate.</p>
+    </div>
+    <div class="cell span-2">
+        <h2><span>// LOCATION</span> <span>[05]</span></h2>
+        <p>Hacker-Space / Basement<br>Musterstraße 42, 10117 Berlin</p>
+        <p>> 14. FEB 2026 / 18:00</p>
+    </div>
 
-<script>
-  const talks = [
-    {
-      time: "11:00",
-      title: "Keynote / WTF is going on",
-      speaker: "diverse",
-      description: "Ein guter Einstieg, um gemeinsam in den Tag und ins Chaos zu starten."
-    },
-    {
-      time: "13:00",
-      title: "AI, Macht & Gesellschaft",
-      speaker: "39C3 Speaker",
-      description: "Technik ist nie neutral. Diskussion ausdrücklich erwünscht."
-    },
-    {
-      time: "15:00",
-      title: "Security, aber richtig",
-      speaker: "Security Nerd",
-      description: "Warum alles kaputt ist – und wie man es besser machen könnte."
-    },
-    {
-      time: "18:00",
-      title: "Netzpolitik & digitale Zivilcourage",
-      speaker: "aktivistische Perspektive",
-      description: "Große Themen, kleine Wohnung."
-    }
-  ];
+    <div class="cell span-4">
+        <h2><span>// FAHRPLAN</span> <span>[06]</span></h2>
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+            <div><span class="tag">REC</span> 19:00 - Infrastructure Review</div>
+            <div><span class="tag">REC</span> 20:30 - Security Nightmares</div>
+            <div><span class="tag">OFF</span> 22:00 - Late Night Hack</div>
+        </div>
+    </div>
 
-  const container = document.getElementById("timetable");
+    <div class="cell span-2" style="padding: 0;">
+        <a href="#" class="btn">RSVP / ANMELDEN</a>
+    </div>
+    <div class="cell span-2 inverted">
+        <span class="label" style="color: var(--black)">07_MOTTO</span>
+        <div style="font-weight: 900;">BE EXCELLENT TO EACH OTHER.</div>
+    </div>
 
-  talks.forEach(talk => {
-    const div = document.createElement("div");
-    div.className = "card timetable-item";
-    div.innerHTML = `
-      <div class="time">${talk.time}</div>
-      <div class="title">${talk.title}</div>
-      <div class="meta">${talk.speaker}</div>
-      <div class="details">${talk.description}</div>
-    `;
-    div.addEventListener("click", () => {
-      div.classList.toggle("open");
-    });
-    container.appendChild(div);
-  });
-</script>
+    <div class="cell span-4" style="font-size: 0.6rem; color: var(--gray); text-align: justify;">
+        POWER_CYCLE_INIT: COMPLETED // 39C3_STYLE_GUIDE_V01 // NICHTS IST JEMALS FERTIG // 
+        NO COLORS DETECTED // BINARY STATE ONLY // END OF LINE.
+    </div>
+</div>
 
 </body>
 </html>
